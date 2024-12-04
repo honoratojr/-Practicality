@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/bootstrap-5.1.3-dist/css/bootstrap.min.css}">
+    <script th:src="@{/jquery-3.6.0-dist/jquery-3.6.0.min.js}"></script>
+    <script th:src="@{/bootstrap-5.1.3-dist/js/bootstrap.min.js}"></script>
+
+    <title>Seja bem vindo</title>
+</head>
+<body>
+
+    <div th:insert="fragments/navbar.html :: nav"></div>
+
+    <div class="container mt-5">
+
+        <div class="alert alert-success alert-dismissible fade show mt-03" th:if="${mensagem}">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <span th:text="${mensagem}"></span>
+        </div>
+
+        <div class="row mt-5 mb-5">
+            <div class="col">
+
+                <h2>Agendamento para corte de cabelo e outros serviços</h2>
+
+                <h4>Atendimento com hora marcada e sem sair de casa? É isso mesmo!</h4>
+                
+                <h4>Hoje sabemos o quanto é difícil conciliar a agenda com uma rotina frenética, 
+                    para ter um tempo só seu. Pensando nisso, trouxemos uma maneira prática para 
+                    que você possa contratar os melhores profissionais para lhe atender no conforto de sua casa.
+                </h4>
+                <h4>
+                    Basta apenas criar seu cadastro, e buscar o profissional mais próximo de sua residência e agendar um horário.
+                    Trabalhamos com agendamento, para que você possa reservar o momento para cuidar de si, dessa maneira, não precisa encarar 
+                    o trânsito, e pode ter mais tempo para suas atividades, mas sem deixar seu bem estar de lado.
+                </h4>
+            </div>
+
+            <div class="col">
+                <img src="/imagens/cabeleireiro.png" alt="" style="width: 580px; height: 580px;">
+            </div>
+
+        </div>
+
+        <div class="row mt-5 mb-5 justify">
+
+            <div class="col">
+                <img src="/imagens/cabeleireiro02.png" alt="" style="width: 768px; height: 468px;">
+            </div>
+
+            <div class="col">
+                <h4>
+                    A interseção entre o corte capilar e a saúde dos fios é complexa, 
+                    oferecendo benefícios que vão além da estética. Ao considerar a saúde capilar de forma holística, 
+                    observamos que o corte regular não apenas elimina danos visíveis, 
+                    mas também desempenha um papel crucial na prevenção de problemas do couro cabeludo.
+                </h4>
+
+                <h4>
+                    Eliminando extremidades danificadas, o corte capilar não só evita quebras futuras, 
+                    mas estimula um crescimento mais robusto. Essa prática, além de contribuir para a saúde global 
+                    do couro cabeludo, cria um ambiente propício ao crescimento 
+                    capilar ao reduzir o acúmulo de oleosidade e resíduos.
+                </h4>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer-container mt-5">
+        <footer class="py-3 bg-dark">
+            <div class="container">
+                <p class="m-0 text-center text-white">Copyright &copy; Your aesthetic 2024</p>
+                <p class="m-0 text-center text-white">Developed by LemonSoft Corporation</p>
+            </div>
+        </footer>
+    </div>
+    
+</body>
+</html>

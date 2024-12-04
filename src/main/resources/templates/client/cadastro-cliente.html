@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastre - se | LemonSoft</title>
+
+    <link rel="stylesheet" th:href="@{/bootstrap-5.1.3-dist/css/bootstrap.min.css}">
+    <script th:src="@{/jquery-3.6.0-dist/jquery-3.6.0.min.js}"></script>
+    <script th:src="@{/bootstrap-5.1.3-dist/js/bootstrap.min.js}"></script>
+
+</head>
+
+<style>
+    .mensagem {
+        color: red;
+    }
+
+    .container-form {
+        width: 700px;
+        padding: 50px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 10px;
+        box-shadow: 0 3px 6px #79797989;
+        margin-bottom: 80px;
+    }
+</style>
+
+<body>
+    <!--Barra de navegação padrão do form-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand mx-auto" href="/home">
+                <img src="/imagens/logo.png" alt="" style="width: 90px; height: 50px;">
+            </a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto mt-4" style="width: 690px;">
+        <div class="row align-items-center">
+            <div class="col small mb-1">
+                <p><strong>1 de 2: </strong>Dados pessoais</p>
+            </div>
+            <div class="col small mb-1">
+                <p class="text-end"><strong>Próximo passo: </strong>Endereço</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-form mx-auto">
+
+        <div class="row">
+            <div class="col">
+
+                <h2 class="mb-4">Crie seu cadastro</h2>
+
+                <form th:action="@{/cliente/salvar}" th:object="${clienteDTO}" method="post">
+
+                    <!--Nome-->
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput" class="form-label">Nome completo</label>
+                        <input type="text" class="form-control" placeholder="Nome completo" th:field="*{nome}">
+                        <div class="col">
+                            <span class="mensagem" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+                        </div>
+                    </div>
+
+                    <!--CPF-->
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput2" class="form-label">CPF</label>
+                        <input type="text" class="form-control" placeholder="000.000.000-00" th:field="*{cpf}">
+                        <div class="col">
+                            <span class="mensagem" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></span>
+                        </div>
+                    </div>
+
+                    <!--E-mail-->
+                    <div class="mb-3">
+                        <label for="formGroupExampleInput" class="form-label">E-mail</label>
+                        <input type="email" class="form-control" placeholder="Seu e-mail" th:field="*{email}">
+                        <div class="col">
+                            <span class="mensagem" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                        </div>
+                    </div>
+
+                    <!--Data de aniversário-->
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="inputEmail4" class="form-label">Data de aniversário</label>
+                            <input type="date" class="form-control" placeholder="DD/MM/AAAA"
+                                th:field="*{dataAniversario}">
+                            <div class="col">
+                                <span class="mensagem" th:if="${#fields.hasErrors('dataAniversario')}"
+                                    th:errors="*{dataAniversario}"></span>
+                            </div>
+                        </div>
+                        <!--Sexo-->
+                        <div class="col-md-6">
+                            <label for="inputGenero" class="form-label">Gênero</label>
+                            <select class="form-select" aria-label="Gênero" th:field="*{genero}">
+                                <option value="" selected>Selecione seu sexo</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Feminino">Feminino</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                            <div class="col">
+                                <span class="mensagem" th:if="${#fields.hasErrors('genero')}"
+                                    th:errors="*{genero}"></span>
+                            </div>
+                        </div>
+
+                        <!--Senhas-->
+                        <div class="col-md-6">
+                            <label for="inputEmail4" class="form-label">Senha</label>
+                            <input type="password" class="form-control" th:field="*{senha}">
+                            <div class="col">
+                                <span class="mensagem" th:if="${#fields.hasErrors('senha')}"
+                                    th:errors="*{senha}"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputPassword4" class="form-label">Confirmar senha</label>
+                            <input type="password" class="form-control" th:field="*{confirmarSenha}">
+                            <div class="col">
+                                <span class="mensagem" th:if="${#fields.hasErrors('confirmarSenha')}"
+                                    th:errors="*{confirmarSenha}"></span>
+                            </div>
+                        </div>
+
+                        <!--CheckBox-->
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="gridCheck">
+                                <label class="form-check-label" for="gridCheck">
+                                    Concordo em receber promoções via e-mail.
+                                </label>
+                            </div>
+                        </div>
+
+                        <!--Botões-->
+                        <div class="col-md-6 d-grid">
+                            <a type="button" class="btn btn-outline-secondary" href="/home">Cancelar</a>
+                        </div>
+                        <div class="col-md-6 d-grid">
+                            <!--<a type="button" class="btn btn-success" href="/lemonSoft/endereco">Continuar</a> -->
+                            <input class="btn btn-success" type="submit" value="Continuar" />
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-container mt-5">
+        <footer class="py-3 bg-dark">
+            <div class="container">
+                <p class="m-0 text-center text-white">Copyright &copy; Your aesthetic 2024</p>
+                <p class="m-0 text-center text-white">Developed by LemonSoft Corporation</p>
+            </div>
+        </footer>
+    </div>
+
+</body>
+
+</html>

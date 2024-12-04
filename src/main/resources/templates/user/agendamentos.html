@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/bootstrap-5.1.3-dist/css/bootstrap.min.css}">
+    <script th:src="@{/jquery-3.6.0-dist/jquery-3.6.0.min.js}"></script>
+    <script th:src="@{/bootstrap-5.1.3-dist/js/bootstrap.min.js}"></script>
+    <title>Agendamentos</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <div th:insert="fragments/navbar-user.html :: nav"></div>
+
+    <div class="container mt-5">
+        <h3>Agendamentos de Clientes</h3>
+
+        <!-- Verifica se existem agendamentos -->
+        <div th:if="${agendamentos.isEmpty()}">
+            <p>Nenhum agendamento encontrado.</p>
+        </div>
+
+        <!-- Exibe a lista de agendamentos em uma tabela -->
+        <div th:if="${!agendamentos.isEmpty()}">
+            <table class="table table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Data e Hora</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Itera sobre os agendamentos e exibe os detalhes -->
+                    <tr th:each="agendamento : ${agendamentos}">
+                        <td th:text="${agendamento.cliente.nome}">Nome do Cliente</td>
+                        <td th:text="${agendamento.dataHoraFormatada}">dd/MM/yyyy HH:mm</td>
+                        <td th:text="${agendamento.status}">Status</td>
+                        <td>
+                            <!-- Botão para confirmar o agendamento -->
+                            <form th:action="@{/admim/alterarStatus}" method="post" style="display: inline;">
+                                <input type="hidden" name="id" th:value="${agendamento.id}" />
+                                <input type="hidden" name="novoStatus" value="Confirmado" />
+                                <button type="submit" class="btn btn-success btn-sm">Confirmar</button>
+                            </form>
+
+                            <!-- Botão para cancelar o agendamento -->
+                            <form th:action="@{/admim/alterarStatus}" method="post" style="display: inline;">
+                                <input type="hidden" name="id" th:value="${agendamento.id}" />
+                                <input type="hidden" name="novoStatus" value="Cancelado" />
+                                <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
+                            </form>
+
+                            <!-- Botão para ver detalhes -->
+                            <form th:action="@{/admim/verDetalhes}" method="get" style="display: inline;">
+                                <input type="hidden" name="id" th:value="${agendamento.id}" />
+                                <button type="submit" class="btn btn-primary btn-sm">Detalhes</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
