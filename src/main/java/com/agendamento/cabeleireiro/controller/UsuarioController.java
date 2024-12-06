@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.agendamento.cabeleireiro.dto.UsuarioDTO;
@@ -20,11 +21,10 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-@RequestMapping("/admim")
+@RequestMapping("/admin")
 public class UsuarioController {
 
     @Autowired
@@ -41,14 +41,14 @@ public class UsuarioController {
     @GetMapping("/cadastrar")
     public String cadastrarUsuario(Model model) {
         model.addAttribute("usuarioDTO", new UsuarioDTO());
-        return "admim/cadastrar";
+        return "admin/cadastrar";
     }
 
     @PostMapping("/salvar")
     public String salvarCadastro(@Valid UsuarioDTO usuarioDTO, BindingResult result, RedirectAttributes attributes,
             Model model) {
         if (result.hasErrors()) {
-            return "admim/cadastrar";
+            return "admin/cadastrar";
         }
         if (!usuarioDTO.getSenha().equals(usuarioDTO.getConfirmarSenha())) {
             result.rejectValue("confirmarSenha", "erro.senha", "As senhas não coincidem!");
@@ -79,7 +79,7 @@ public class UsuarioController {
             return "user/login-user";
         }
         session.setAttribute("usuarioLogado", usuarioLogin);
-        return "redirect:/admim/agendamentos";
+        return "redirect:/admin/agendamentos";
     }
 
     @GetMapping("/agendamentos")
@@ -88,40 +88,55 @@ public class UsuarioController {
         if (usuarioLogado != null) {
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-            List<Agendamento> agendamentos = agendamentoRepository.findByProfissional(usuarioLogado);
-    
+            // Recupera os agendamentos ordenados do mais recente para o mais antigo
+            List<Agendamento> agendamentos = agendamentoRepository.findByProfissionalOrderByDataHoraDesc(usuarioLogado);
+
             // Formatando a data e hora
-            agendamentos
-                    .forEach(agendamento -> agendamento.setDataHoraFormatada(agendamento.getDataHora().format(formatter)));
-    
+            agendamentos.forEach(
+                    agendamento -> agendamento.setDataHoraFormatada(agendamento.getDataHora().format(formatter)));
+
             model.addAttribute("agendamentos", agendamentos);
+            model.addAttribute("nomeUsuario", usuarioLogado.getPrimeiroNome());
             model.addAttribute("usuario", usuarioLogado);
             return "user/agendamentos";
         }
-        return "redirect:/admim/login";
+        return "redirect:/admin/login";
     }
 
     // Endpoint para alterar o status do agendamento
-    @GetMapping("/alterarStatus/{status}/{id}")
-    public String alterarStatus(@PathVariable String status, @PathVariable Long id, Model model) {
+    @PostMapping("/alterarStatus")
+    public String alterarStatus(@RequestParam Long id, @RequestParam String novoStatus, RedirectAttributes attributes) {
         Agendamento agendamento = agendamentoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Agendamento não encontrado!"));
 
-        agendamento.setStatus(status);
+        agendamento.setStatus(novoStatus);
         agendamentoRepository.save(agendamento);
+        attributes.addFlashAttribute("mensagem", "Status alterado com sucesso!");
 
         // Redireciona de volta à página de agendamentos
-        return "redirect:/agendamentos";
+        return "redirect:agendamentos";
     }
 
     // Endpoint para visualizar os detalhes do agendamento
-    @GetMapping("/detalhesAgendamento/{id}")
-    public String detalhesAgendamento(@PathVariable Long id, Model model) {
+    @GetMapping("/verDetalhes")
+    public String detalhesAgendamento(@RequestParam Long id, Model model) {
         Agendamento agendamento = agendamentoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Agendamento não encontrado!"));
+    // Formatar a data e hora
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    String dataHoraFormatada = agendamento.getDataHora().format(formatter);
+
+    // Adicionar a data formatada ao modelo
+    model.addAttribute("dataHoraFormatada", dataHoraFormatada);
 
         model.addAttribute("agendamento", agendamento);
-        return "detalhesAgendamento"; // Nome do template para os detalhes
+        return "user/detalhes";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/admin/login";
     }
 
 }

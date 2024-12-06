@@ -15,6 +15,7 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
     // Método para encontrar agendamentos por cliente
     List<Agendamento> findByCliente(Cliente cliente);
     List<Agendamento> findByProfissional(Usuario profissional);
+    List<Agendamento> findByProfissionalOrderByDataHoraDesc(Usuario profissional);
 
     
 }

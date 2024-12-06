@@ -33,7 +33,7 @@
           <li class="nav-item">
             <a class="nav-link" href="/curiosidades">Curiosidades</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" th:if="${session.clienteLogado == null}">
             <a class="nav-link" href="/cliente/cadastrar">Cadastrar</a>
           </li>
 

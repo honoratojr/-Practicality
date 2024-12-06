@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <th>Data e Hora</th>
-                <td th:text="${agendamento.dataHoraFormatada}">dd/MM/yyyy HH:mm</td>
+                <td th:text="${dataHoraFormatada}">dd/MM/yyyy HH:mm</td>
             </tr>
             <tr>
                 <th>Status</th>
@@ -35,7 +35,7 @@
                 <td th:text="${agendamento.observacoes}">Observações do Cliente</td>
             </tr>
         </table>
-        <a th:href="@{/agendamentos}" class="btn btn-primary">Voltar</a>
+        <a th:href="@{/admin/agendamentos}" class="btn btn-primary">Voltar</a>
     </div>
 </body>
 </html>

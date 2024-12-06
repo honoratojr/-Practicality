@@ -34,4 +34,12 @@ public class Usuario implements Serializable {
     @OneToMany(mappedBy = "profissional")  // Relacionamento com os agendamentos atribuídos ao profissional
     private List<Agendamento> agendamentos;
 
+    public String getPrimeiroNome() {
+        if (this.nome != null && !this.nome.isEmpty()) {
+            String[] partesNome = this.nome.trim().split("\\s+");
+            return partesNome[0];
+        }
+        return "";
+    }
+
 }

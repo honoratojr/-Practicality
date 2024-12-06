@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,11 +9,18 @@
     <script th:src="@{/bootstrap-5.1.3-dist/js/bootstrap.min.js}"></script>
     <title>Agendamentos</title>
 </head>
+
 <body>
     <!-- Navbar -->
     <div th:insert="fragments/navbar-user.html :: nav"></div>
 
     <div class="container mt-5">
+
+        <div class="alert alert-success alert-dismissible fade show mt-03" th:if="${mensagem}">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <span th:text="${mensagem}"></span>
+        </div>
+
         <h3>Agendamentos de Clientes</h3>
 
         <!-- Verifica se existem agendamentos -->
@@ -39,21 +47,21 @@
                         <td th:text="${agendamento.status}">Status</td>
                         <td>
                             <!-- Botão para confirmar o agendamento -->
-                            <form th:action="@{/admim/alterarStatus}" method="post" style="display: inline;">
+                            <form th:action="@{/admin/alterarStatus}" method="post" style="display: inline;">
                                 <input type="hidden" name="id" th:value="${agendamento.id}" />
                                 <input type="hidden" name="novoStatus" value="Confirmado" />
                                 <button type="submit" class="btn btn-success btn-sm">Confirmar</button>
                             </form>
 
                             <!-- Botão para cancelar o agendamento -->
-                            <form th:action="@{/admim/alterarStatus}" method="post" style="display: inline;">
+                            <form th:action="@{/admin/alterarStatus}" method="post" style="display: inline;">
                                 <input type="hidden" name="id" th:value="${agendamento.id}" />
                                 <input type="hidden" name="novoStatus" value="Cancelado" />
                                 <button type="submit" class="btn btn-danger btn-sm">Cancelar</button>
                             </form>
 
                             <!-- Botão para ver detalhes -->
-                            <form th:action="@{/admim/verDetalhes}" method="get" style="display: inline;">
+                            <form th:action="@{/admin/verDetalhes}" method="get" style="display: inline;">
                                 <input type="hidden" name="id" th:value="${agendamento.id}" />
                                 <button type="submit" class="btn btn-primary btn-sm">Detalhes</button>
                             </form>
@@ -64,4 +72,5 @@
         </div>
     </div>
 </body>
+
 </html>
